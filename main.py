@@ -5,38 +5,74 @@ import json
 with open("rsh_flashcards.json","r") as json_file:
     data = json.load(json_file)
 
+
 def hanziSearch(hanzi):
 #spit out keyword and allow to edit quick notes
-    print(f"Searching for {hanzi}: ")
+    print(f"Searching for {hanzi}...")
     #logic
     for index, details in data.items():
         if details["hanzi"] == hanzi:
             print(f"Keyword: {details['keyword']}")
             print(f"Additional notes: {details["notes"]}")
-            print("Press [N] to add a Note or <return> to make a new search")
-        else:
-            print(f"{hanzi} was not found")
-#make it loop somehow?
+            task = input("Press [N] to update a Note, [Q] to quit or hit Enter to make a new search ").capitalize()
+            if task == "N":
+                myNote = input("Enter your note now: ")
+                noteAdded = addNote(hanzi, myNote)  # addNote will return True if successful
+                if noteAdded: # is True
+                    print(f"Your note '{myNote}' was successfully updated!")
+                else:
+                    print("Something went wrong, try again.")
+                    break
+            if task == "Q":
+                print("Exiting...")
+                break
+            else:
+                NewSearch()
+            
         
 
 def keywordSearch(keyword):
 #spit out hanzi and allow to edit quick notes
-    print(keyword)
+    pass
     
+def addNote(searchTerm, myNote):
+    # Checks if the note is empty
+    if myNote == "":
+        confirm = input("You entered nothing. This will erase the existing entry PERMANENTLY. Would you like to erase your existing entry? Enter [Y] or [N]").capitalize()
+        if confirm == "N":
+            return  # Exits so no override occurs
+        # if Y, empty string overrides the existing data
+        for index, details in data.items():
+            if details["hanzi"] == searchTerm or details["keyword"] == searchTerm:
+                details["notes"] = ""  # erases the note
+        with open("rsh_flashcards.json", "w") as json_file:
+            json.dump(data, json_file, indent=4)
+        return True  # Return True to indicate that the note was erased
+    
+    # if myNote is not empty, it goes ahead and adds the note
+    for index, details in data.items():
+        if details["hanzi"] == searchTerm or details["keyword"] == searchTerm:
+            details["notes"] = myNote  
+            with open("rsh_flashcards.json", "w") as json_file:
+                json.dump(data, json_file, indent=4)
+            return True
+    return False
 
 
-def NewSearch()
-print("Welcome to Asha's Remembering the Hanzi Quick Search!")
-print("Are you searching by [H]hanzi or a [K]keyword?")
-searchType = input("Please select [H] or [K]").capitalize()
+def NewSearch():
+    print("Welcome to Asha's Remembering the Hanzi Quick Search!")
+    print("Are you searching by [H]anzi or a [K]eyword?")
+    searchType = input("Please select [H] or [K] ").capitalize()
 
-if searchType == "H" or searchType == "HANZI":
-    userEntry = input("Enter the hanzi now: ")
-    hanziSearch(userEntry)
+    if searchType == "H" or searchType == "HANZI":
+        userEntry = input("Enter the hanzi now: ")
+        hanziSearch(userEntry)
 
-if searchType == "K" or searchType == "KEYWORD":
-    userEntry = input("Enter the keyword now: ")
-    keywordSearch(userEntry)
+    if searchType == "K" or searchType == "KEYWORD":
+        userEntry = input("Enter the keyword now: ")
+        keywordSearch(userEntry)
+
+NewSearch()
 
 
 
