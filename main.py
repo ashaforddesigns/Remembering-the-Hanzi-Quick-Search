@@ -33,7 +33,7 @@ def keywordSearch(keyword):
     print(f"Searching for '{keyword}'")
     #logic
     for index, details in data.items():
-        if details['keyword'] == keyword:
+        if keyword in details['keyword']:
             print(f"Hanzi: {details['hanzi']}")
             print(f"Additional notes: {details["notes"]}")
             task = input("Press [N] to update a Note, [Q] to quit or hit Enter to make a new search ").capitalize()
@@ -60,7 +60,7 @@ def addNote(searchTerm, myNote):
             return  # Exits so no override occurs
         # if Y, empty string overrides the existing data
         for index, details in data.items():
-            if details["hanzi"] == searchTerm or details["keyword"] == searchTerm:
+            if details["hanzi"] == searchTerm or searchTerm in details["keyword"]:
                 details["notes"] = ""  # erases the note
         with open("rsh_flashcards.json", "w") as json_file:
             json.dump(data, json_file, indent=4)
@@ -68,7 +68,7 @@ def addNote(searchTerm, myNote):
     
     # if myNote is not empty, it goes ahead and adds the note
     for index, details in data.items():
-        if details["hanzi"] == searchTerm or details["keyword"] == searchTerm:
+        if details["hanzi"] == searchTerm or searchTerm in details["keyword"]:
             details["notes"] = myNote  
             with open("rsh_flashcards.json", "w") as json_file:
                 json.dump(data, json_file, indent=4)
@@ -84,10 +84,12 @@ def NewSearch():
     if searchType == "H" or searchType == "HANZI":
         userEntry = input("Enter the hanzi now: ")
         hanziSearch(userEntry)
-
-    if searchType == "K" or searchType == "KEYWORD":
+    elif searchType == "K" or searchType == "KEYWORD":
         userEntry = input("Enter the keyword now: ")
         keywordSearch(userEntry)
+    else:
+        print("You did not enter [H] or [K]. Let's try again.")
+        NewSearch()
 
 NewSearch()
 
