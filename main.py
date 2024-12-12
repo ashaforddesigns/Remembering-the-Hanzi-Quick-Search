@@ -10,6 +10,7 @@ def hanziSearch(hanzi):
     for index, details in data.items():
         if details["hanzi"] == hanzi:
             print(f"Keyword: {details['keyword']}")
+            print(f"Components: {details['components']}")
             print(f"Additional notes: {details["notes"]}")
             task = input("Press [N] to update a Note, [Q] to quit or hit Enter to make a new search ").capitalize()
             if task == "N":
@@ -35,6 +36,7 @@ def keywordSearch(keyword):
     for index, details in data.items():
         if keyword in details['keyword']:
             print(f"Hanzi: {details['hanzi']}")
+            print(f"Components: {details['components']}")
             print(f"Additional notes: {details["notes"]}")
             task = input("Press [N] to update a Note, [Q] to quit or hit Enter to make a new search ").capitalize()
             if task == "N":
