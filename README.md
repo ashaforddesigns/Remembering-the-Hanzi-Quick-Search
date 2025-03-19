@@ -3,7 +3,7 @@
 - Create a quick search through all 3000 of James Heisig by using the character or the keyword
 - Allow the user to add notes, which could be their own story that they use to remember the hanzi
 
-## Tasks :lightbulb:
+## Tasks :bulb:
 - Search for a Remembering the Simplified Hanzi "keyword" (Heisig's keywords)
     - This will return the associated hanzi.
     - You can then add a note which will be assoicated with the entire entry (both the hanzi and the keyword). I frequently add my own personal stories that help me remember the hanzi
